@@ -42,7 +42,7 @@
       const listContainer = document.getElementById('unanswered-list');
 
       try {
-        const response = await fetch('https://raw.githubusercontent.com/AdamMady/discordqna/refs/heads/main/unanswered.json');
+        const response = await fetch('https://adammady.github.io/discordqna/unanswered.json');
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
