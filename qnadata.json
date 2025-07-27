@@ -1,17 +1,12 @@
 [
       {
-        "timestamp": "Sun, 28 Jul 2024 01:30:00 UTC",
-        "question": "this is an example question from json",
-        "answer": "and this is the corresponding answer."
+        "timestamp": "",
+        "question": "",
+        "answer": ""
       },
       {
-        "timestamp": "Sat, 27 Jul 2024 18:00:00 UTC",
-        "question": "here is another question?",
-        "answer": "and a second answer."
-      },
-      {
-        "timestamp": "Fri, 26 Jul 2024 10:15:00 UTC",
-        "question": "what happens if a question is very long and needs to wrap around to the next line?",
-        "answer": "the css is configured to handle word-wrapping automatically so the layout does not break."
+        "timestamp": "",
+        "question": "",
+        "answer": ""
       }
 ]
