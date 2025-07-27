@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>discord qna</title>
+  <title>qna</title>
   <style>
     * {
       box-sizing: border-box;
@@ -18,31 +18,29 @@
       margin: 0;
       text-align: center;
       font-family: Helvetica, Arial, sans-serif;
-      background-color: #0d1117; /* Dark, almost-black blue */
-      color: #c9d1d9; /* Off-white for main text */
+      background-color: #0d1117; 
+      color: #c9d1d9; 
       text-transform: lowercase;
       padding: 20px;
     }
     h1 {
       margin-bottom: 20px;
-      color: #58a6ff; /* Softer, brighter blue for headings */
-      font-size: 1.5em; 
-      white-space: nowrap;
+      color: #58a6ff; 
+      font-size: 1.5em;
     }
-    .top-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    .top-container, .container, .content-container {
       width: 100%;
       max-width: 400px;
+    }
+    .top-container {
       margin-bottom: 20px;
     }
     .top-container button {
       width: 100%;
       padding: 10px 0;
-      background-color: #21262d; /* Dark gray-blue */
+      background-color: #21262d; 
       color: #c9d1d9;
-      border: 1px solid #30363d; /* Subtle border */
+      border: 1px solid #30363d; 
       font-size: 1rem;
       cursor: pointer;
       transition: background-color 0.3s, border-color 0.3s;
@@ -56,11 +54,9 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: 100%;
-      max-width: 400px;
       padding: 20px;
-      background-color: #161b22; /* Dark container background */
-      border: 1px solid #30363d; /* Subtle border */
+      background-color: #161b22; 
+      border: 1px solid #30363d; 
       border-radius: 8px;
     }
     form {
@@ -73,87 +69,203 @@
       padding: 10px;
       font-size: 1rem;
       border-radius: 5px;
-      background-color: #0d1117; /* Same as body background */
+      background-color: #0d1117; 
       color: #c9d1d9;
       border: 1px solid #30363d;
       width: 100%;
       resize: none;
-      box-sizing: border-box;
     }
     textarea:focus {
       outline: none;
-      border-color: #58a6ff; /* Highlight on focus */
+      border-color: #58a6ff; 
     }
     button.submit-button {
       cursor: pointer;
-      background-color: #238636; /* Using a contrasting green for "send" can improve UX */
+      background-color: #388bfd;
       color: white;
       border: 1px solid rgba(240, 246, 252, 0.1);
       padding: 10px;
       border-radius: 5px;
       font-size: 1rem;
       font-weight: bold;
-      transition: background-color 0.3s;
+      transition: background-color 0.2s;
       width: 100%;
-      box-sizing: border-box;
     }
     button.submit-button:hover {
-      background-color: #2ea043;
+      background-color: #58a6ff;
     }
-
-    /* Styles for the example Q&A box */
-    .example-container {
-      margin-top: 30px;
-      max-width: 400px;
-      width: 100%;
+    .content-container {
+      margin-top: 20px;
     }
     .qna {
       border: 1px solid #30363d;
       border-radius: 8px;
-      padding: 15px;
+      padding: 12px 15px;
       background-color: #161b22;
       word-break: break-word;
-      text-align: left; 
+      text-align: center;
+      margin-top: 20px;
     }
     .qna p {
-      margin: 5px 0;
+      margin: 6px 0;
+    }
+    .time-toggle-label {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 0.9em;
+        color: #8b949e;
+        cursor: pointer;
+        width: 100%;
+    }
+    .time-toggle-label input {
+        display: none;
+    }
+    .toggle-track {
+        position: relative;
+        width: 100%;
+        height: 24px;
+        background-color: #30363d;
+        border-radius: 12px;
+    }
+    .toggle-handle {
+        position: absolute;
+        top: 3px;
+        left: 3px; 
+        width: 18px;
+        height: 18px;
+        background-color: #c9d1d9;
+        border-radius: 50%;
+        transition: left 0.3s ease;
+    }
+    .time-toggle-label input:checked + .toggle-track > .toggle-handle {
+        left: calc(100% - 18px - 3px);
+    }
+    .utc-timestamp {
+      transition: opacity 0.1s ease-in-out;
+    }
+    .fading-out {
+      opacity: 0;
     }
   </style>
 </head>
 <body>
 
-  <!-- Navigation button to unanswered questions -->
   <div class="top-container">
     <button onclick="navigateTo('unanswered.html')">unanswered questions</button>
   </div>
 
   <div class="container">
-    <h1>ask a question, check page later.</h1>
+    <h1>ask, check later</h1>
     <form action="https://formsubmit.co/bf57c0c0e941947615314101da0f1697" method="POST">
-      <!-- Redirects to the main site after submission -->
       <input type="hidden" name="_next" value="https://adammady.github.io/qnasite/">
       <textarea name="message" placeholder="ask a question" rows="4" required></textarea>
       <button type="submit" class="submit-button">send anonymously</button>
     </form>
   </div>
-  
-  <br>
 
-  <!-- Example Q&A Section -->
-  <div class="example-container">
-    <div class="qna">
-      <!-- Updated colors to match the new vibe -->
-      <p style="color: #8b949e;">1/1/2025 - 12:00 AM</p>
-      <p style="color: #c9d1d9;">this is an example question</p>
-      <p>this is an example answer</p>
-    </div>
+  <div class="content-container" id="qna-section">
+    <!-- This section will be populated by the script -->
   </div>
 
   <script>
-    // Navigates to the specified page
+    // --- CONTENT SOURCE ---
+    // Add your questions here.
+    // The timestamp MUST be in "Day, DD Mon YYYY HH:mm:ss GMT" format to ensure
+    // it's treated as UTC and converted correctly to every user's local time.
+    const qnaData = [
+      {
+        "timestamp": "Sun, 28 Jul 2024 01:30:00 GMT",
+        "question": "this is an example question from json",
+        "answer": "and this is the corresponding answer."
+      },
+      {
+        "timestamp": "Sat, 27 Jul 2024 18:00:00 GMT",
+        "question": "here is another question?",
+        "answer": "and a second answer."
+      },
+      {
+        "timestamp": "Fri, 26 Jul 2024 10:15:00 GMT",
+        "question": "what happens if a question is very long and needs to wrap around to the next line?",
+        "answer": "the css is configured to handle word-wrapping automatically so the layout does not break."
+      }
+    ];
+
     function navigateTo(page) {
       window.location.href = page;
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const qnaSection = document.getElementById('qna-section');
+      const FADE_DURATION = 100;
+
+      // 1. Generate HTML from JSON data
+      function displayContent() {
+        if (qnaData.length === 0) return;
+
+        // Create the toggle switch
+        const toggleHTML = `
+          <label class="time-toggle-label">
+              <span>24</span>
+              <input type="checkbox" id="time-format-toggle" checked>
+              <div class="toggle-track">
+                  <div class="toggle-handle"></div>
+              </div>
+              <span>12</span>
+          </label>`;
+        
+        // Create all Q&A blocks
+        const qnaBlocksHTML = qnaData.map(item => `
+          <div class="qna">
+            <p class="utc-timestamp" data-utc-time="${item.timestamp}" style="color: #8b949e;"></p>
+            <p style="color: #a6d1ff;">${item.question}</p>
+            <p>${item.answer}</p>
+          </div>
+        `).join('');
+
+        qnaSection.innerHTML = toggleHTML + qnaBlocksHTML;
+      }
+      
+      // 2. Run the display function
+      displayContent();
+
+      // 3. Set up functionality for the newly created elements
+      const timeFormatToggle = document.getElementById('time-format-toggle');
+      const timestampElements = document.querySelectorAll('.utc-timestamp');
+
+      if (!timeFormatToggle) return; // Stop if there's no content to display
+
+      function updateAllTimestamps() {
+        const use12HourFormat = timeFormatToggle.checked;
+        timestampElements.forEach(function(element) {
+          const utcDateString = element.getAttribute('data-utc-time');
+          if (!utcDateString) return;
+
+          const date = new Date(utcDateString);
+          if (isNaN(date.getTime())) {
+            element.textContent = 'invalid date';
+            return;
+          }
+          
+          element.textContent = date.toLocaleString('en-US', {
+            year: 'numeric', month: 'numeric', day: 'numeric',
+            hour: 'numeric', minute: 'numeric', hour12: use12HourFormat
+          }).replace(',', ' -').toLowerCase(); 
+        });
+      }
+
+      // Initial call to set the time
+      updateAllTimestamps();
+
+      // Add listener for the toggle
+      timeFormatToggle.addEventListener('change', function() {
+        timestampElements.forEach(el => el.classList.add('fading-out'));
+        setTimeout(() => {
+          updateAllTimestamps();
+          timestampElements.forEach(el => el.classList.remove('fading-out'));
+        }, FADE_DURATION);
+      });
+    });
   </script>
 
 </body>
