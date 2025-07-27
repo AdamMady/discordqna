@@ -41,7 +41,7 @@
   <div class="container">
     <h1>ask, check later</h1>
     <form action="https://formsubmit.co/bf57c0c0e941947615314101da0f1697" method="POST">
-      <input type="hidden" name="_next" value="https://adammady.github.io/discordqna/">
+      <input type="hidden" name="_next" value="https://adammady.github.io/qnasite/">
       <textarea name="message" placeholder="ask a question" rows="4" required></textarea>
       <button type="submit" class="submit-button">send anonymously</button>
     </form>
@@ -63,9 +63,7 @@
       async function fetchAndDisplayContent() {
         try {
           const response = await fetch('https://raw.githubusercontent.com/AdamMady/discordqna/refs/heads/main/qnadata.json');
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
+          if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
           const qnaData = await response.json();
 
           if (qnaData.length === 0) {
@@ -74,12 +72,17 @@
           }
 
           const toggleHTML = `<label class="time-toggle-label"><span>24</span><input type="checkbox" id="time-format-toggle" checked><div class="toggle-track"><div class="toggle-handle"></div></div><span>12</span></label>`;
-          const qnaBlocksHTML = qnaData.map(item => `
-            <div class="qna">
-              <p class="utc-timestamp" data-utc-time="${item.timestamp}" style="color: #8b949e;"></p>
-              <p style="color: #a6d1ff;">${item.question}</p>
-              <p>${item.answer}</p>
-            </div>`).join('');
+          
+          const qnaBlocksHTML = qnaData.map(item => {
+            // THE KEY CHANGE IS HERE: We add " UTC" to your simplified date string.
+            const fullTimestamp = item.timestamp + ' UTC';
+            return `
+              <div class="qna">
+                <p class="utc-timestamp" data-utc-time="${fullTimestamp}" style="color: #8b949e;"></p>
+                <p style="color: #a6d1ff;">${item.question}</p>
+                <p>${item.answer}</p>
+              </div>`;
+          }).join('');
           
           qnaSection.innerHTML = toggleHTML + qnaBlocksHTML;
           setupEventListeners();
@@ -93,7 +96,6 @@
       function setupEventListeners() {
         const timeFormatToggle = document.getElementById('time-format-toggle');
         const timestampElements = document.querySelectorAll('.utc-timestamp');
-
         if (!timeFormatToggle) return;
 
         function updateAllTimestamps() {
