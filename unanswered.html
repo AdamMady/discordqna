@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>unanswered questions</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      text-align: center;
+      font-family: Helvetica, Arial, sans-serif;
+      background-color: #0d1117; 
+      color: #c9d1d9; 
+      text-transform: lowercase;
+      padding: 20px;
+    }
+    .top-container, .content-container {
+      width: 100%;
+      max-width: 400px;
+    }
+    .top-container {
+      margin-bottom: 10px;
+    }
+    .top-container button {
+      width: 100%;
+      padding: 10px 0;
+      background-color: #21262d; 
+      color: #c9d1d9;
+      border: 1px solid #30363d; 
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s, border-color 0.3s;
+      border-radius: 5px;
+    }
+    .top-container button:hover {
+      background-color: #30363d;
+      border-color: #8b949e;
+    }
+    .content-container {
+      margin-top: 20px;
+    }
+    .qna {
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 15px;
+      background-color: #161b22;
+      word-break: break-word;
+      text-align: center;
+      margin-top: 15px; /* Spacing between question boxes */
+    }
+    .qna p {
+      margin: 0;
+      color: #a6d1ff; /* Use the same color as questions on the main page */
+    }
+    /* Style for the disclaimer text */
+    .disclaimer {
+      font-size: 0.85em;
+      color: #8b949e;
+      margin: 0;
+    }
+    /* Style for the redacted text */
+    .redacted {
+      color: #8b949e;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-container">
+    <button onclick="navigateBack()">back to inbox</button>
+  </div>
+  
+  <p class="disclaimer">these questions may be heavily edited and trimmed.</p>
+
+  <div class="content-container" id="unanswered-list">
+    <!-- Unanswered questions will be generated here by the script -->
+  </div>
+
+  <script>
+    // --- UNANSWERED QUESTIONS SOURCE ---
+    // Add new unanswered questions to this list.
+    const unansweredQuestions = [
+      "what is your favorite project you've worked on?",
+      "any advice for someone starting to learn code?",
+      "will you ever answer the question from @someones_username?",
+      "is this the real life? is this just fantasy?",
+      "why is the sky blue?"
+    ];
+
+    /**
+     * Navigates back to the main page without creating a new entry
+     * in the browser's history, preventing back-button loops.
+     */
+    function navigateBack() {
+      // Use 'index.html' or the name of your main qna page.
+      window.location.replace('index.html');
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const listContainer = document.getElementById('unanswered-list');
+
+      if (unansweredQuestions.length > 0) {
+        const htmlToRender = unansweredQuestions.map(question => {
+          // Find all instances of '@' and replace them with a styled span
+          const processedQuestion = question.replace(/@/g, '<span class="redacted">[redacted]</span>');
+          
+          return `
+            <div class="qna">
+              <p>${processedQuestion}</p>
+            </div>
+          `;
+        }).join('');
+
+        listContainer.innerHTML = htmlToRender;
+      }
+    });
+  </script>
+
+</body>
+</html>
