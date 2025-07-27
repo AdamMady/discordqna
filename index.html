@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>discord qna</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      text-align: center;
+      font-family: Helvetica, Arial, sans-serif;
+      background-color: #0d1117; /* Dark, almost-black blue */
+      color: #c9d1d9; /* Off-white for main text */
+      text-transform: lowercase;
+      padding: 20px;
+    }
+    h1 {
+      margin-bottom: 20px;
+      color: #58a6ff; /* Softer, brighter blue for headings */
+      font-size: 1.5em; 
+      white-space: nowrap;
+    }
+    .top-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      max-width: 400px;
+      margin-bottom: 20px;
+    }
+    .top-container button {
+      width: 100%;
+      padding: 10px 0;
+      background-color: #21262d; /* Dark gray-blue */
+      color: #c9d1d9;
+      border: 1px solid #30363d; /* Subtle border */
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s, border-color 0.3s;
+      border-radius: 5px;
+    }
+    .top-container button:hover {
+      background-color: #30363d;
+      border-color: #8b949e;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 400px;
+      padding: 20px;
+      background-color: #161b22; /* Dark container background */
+      border: 1px solid #30363d; /* Subtle border */
+      border-radius: 8px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+    textarea {
+      margin-bottom: 10px;
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 5px;
+      background-color: #0d1117; /* Same as body background */
+      color: #c9d1d9;
+      border: 1px solid #30363d;
+      width: 100%;
+      resize: none;
+      box-sizing: border-box;
+    }
+    textarea:focus {
+      outline: none;
+      border-color: #58a6ff; /* Highlight on focus */
+    }
+    button.submit-button {
+      cursor: pointer;
+      background-color: #238636; /* Using a contrasting green for "send" can improve UX */
+      color: white;
+      border: 1px solid rgba(240, 246, 252, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-weight: bold;
+      transition: background-color 0.3s;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    button.submit-button:hover {
+      background-color: #2ea043;
+    }
+
+    /* Styles for the example Q&A box */
+    .example-container {
+      margin-top: 30px;
+      max-width: 400px;
+      width: 100%;
+    }
+    .qna {
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 15px;
+      background-color: #161b22;
+      word-break: break-word;
+      text-align: left; 
+    }
+    .qna p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation button to unanswered questions -->
+  <div class="top-container">
+    <button onclick="navigateTo('unanswered.html')">unanswered questions</button>
+  </div>
+
+  <div class="container">
+    <h1>ask a question, check page later.</h1>
+    <form action="https://formsubmit.co/bf57c0c0e941947615314101da0f1697" method="POST">
+      <!-- Redirects to the main site after submission -->
+      <input type="hidden" name="_next" value="https://adammady.github.io/qnasite/">
+      <textarea name="message" placeholder="ask a question" rows="4" required></textarea>
+      <button type="submit" class="submit-button">send anonymously</button>
+    </form>
+  </div>
+  
+  <br>
+
+  <!-- Example Q&A Section -->
+  <div class="example-container">
+    <div class="qna">
+      <!-- Updated colors to match the new vibe -->
+      <p style="color: #8b949e;">1/1/2025 - 12:00 AM</p>
+      <p style="color: #c9d1d9;">this is an example question</p>
+      <p>this is an example answer</p>
+    </div>
+  </div>
+
+  <script>
+    // Navigates to the specified page
+    function navigateTo(page) {
+      window.location.href = page;
+    }
+  </script>
+
+</body>
+</html>
