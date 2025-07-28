@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>qna</title>
   <style>
-    /* All CSS styles are identical to the previous version */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; text-align: center; font-family: Helvetica, Arial, sans-serif; background-color: #0d1117; color: #c9d1d9; text-transform: lowercase; padding: 20px; }
     h1 { margin-bottom: 20px; color: #58a6ff; font-size: 1.5em; }
@@ -41,7 +40,7 @@
   <div class="container">
     <h1>ask, check later</h1>
     <form action="https://formsubmit.co/bf57c0c0e941947615314101da0f1697" method="POST">
-      <input type="hidden" name="_next" value="https://adammady.github.io/discordqna/index.html">
+      <input type="hidden" name="_next" value="https://adammady.github.io/qnasite/">
       <textarea name="message" placeholder="ask a question" rows="4" required></textarea>
       <button type="submit" class="submit-button">send anonymously</button>
     </form>
@@ -62,7 +61,7 @@
 
       async function fetchAndDisplayContent() {
         try {
-          const response = await fetch('https://adammady.github.io/discordqna/qnadata.json');
+          const response = await fetch('https://raw.githubusercontent.com/AdamMady/discordqna/refs/heads/main/qnadata.json');
           if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
           const qnaData = await response.json();
 
@@ -71,17 +70,10 @@
             return;
           }
 
-          const toggleHTML = `<label class="time-toggle-label"><span>24</span><input type="checkbox" id="time-format-toggle" checked><div class="toggle-track"><div class="toggle-handle"></div></div><span>12</span></label>`;
-          
+          const toggleHTML = `<label class="time-toggle-label"><span>24</span><input type="checkbox" id="time-format-toggle"><div class="toggle-track"><div class="toggle-handle"></div></div><span>12</span></label>`;
           const qnaBlocksHTML = qnaData.map(item => {
-            // THE KEY CHANGE IS HERE: We add " UTC" to your simplified date string.
             const fullTimestamp = item.timestamp + ' UTC';
-            return `
-              <div class="qna">
-                <p class="utc-timestamp" data-utc-time="${fullTimestamp}" style="color: #8b949e;"></p>
-                <p style="color: #a6d1ff;">${item.question}</p>
-                <p>${item.answer}</p>
-              </div>`;
+            return `<div class="qna"><p class="utc-timestamp" data-utc-time="${fullTimestamp}" style="color: #8b949e;"></p><p style="color: #a6d1ff;">${item.question}</p><p>${item.answer}</p></div>`;
           }).join('');
           
           qnaSection.innerHTML = toggleHTML + qnaBlocksHTML;
@@ -98,9 +90,19 @@
         const timestampElements = document.querySelectorAll('.utc-timestamp');
         if (!timeFormatToggle) return;
 
+        // Load user preference from localStorage
+        const savedPreference = localStorage.getItem('use12HourFormat');
+        // Default to 12-hour (checked) if no preference is found.
+        // localStorage stores strings, so we check against the string 'false'.
+        if (savedPreference === 'false') {
+          timeFormatToggle.checked = false;
+        } else {
+          timeFormatToggle.checked = true;
+        }
+
         function updateAllTimestamps() {
           const use12HourFormat = timeFormatToggle.checked;
-          timestampElements.forEach(function(element) {
+          timestampElements.forEach(element => {
             const utcDateString = element.getAttribute('data-utc-time');
             if (!utcDateString) return;
             const date = new Date(utcDateString);
@@ -112,8 +114,15 @@
           });
         }
 
+        // Run once on load to set the time based on preference
         updateAllTimestamps();
+
+        // Add listener to update time and save preference on change
         timeFormatToggle.addEventListener('change', () => {
+          // Save the new preference to localStorage
+          localStorage.setItem('use12HourFormat', timeFormatToggle.checked);
+          
+          // Animate the update
           timestampElements.forEach(el => el.classList.add('fading-out'));
           setTimeout(() => {
             updateAllTimestamps();
